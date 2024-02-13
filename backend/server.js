@@ -51,7 +51,7 @@ const passHistory = new mongoose.Schema({
     type: String,
     required: true,
   },
-  reasons: {
+  reason: {
     type: String,
     required: true,
   },
@@ -117,11 +117,12 @@ const newStudentSchema = new mongoose.Schema({
   },
 });
 
+// we use teacherDB fro storing teacher details for login and other purposes
 const teacherdb = mongoose.model("teacherdb", newTeacherSchema);
 
 const outPassCollection = mongoose.model("outPassCollection", outPassSchema);
 
-const passCollection = mongoose.model("passCollection", passHistory);
+const passCollections = mongoose.model("passCollections", passHistory);
 
 const studentdb = mongoose.model("studentdb", newStudentSchema);
 
@@ -290,7 +291,7 @@ app.post("/verifyPass", async (req, res) => {
       const passData = {
         rollno: rollno,
         reason: check.reason,
-        passGeneratedDate:check.passGeneratedDate,
+        passGeneratedDate: check.passGeneratedDate,
         startDate: currentTime,
         endDate: check.endDate,
       };
@@ -299,9 +300,9 @@ app.post("/verifyPass", async (req, res) => {
       });
       console.log("deleted from outPass");
       console.log("Going to insert into history");
-      await passCollection.insertMany([passData]);
+      await passCollections.insertMany([passData]);
       console.log("inserted to history");
-      if (check.endDate > currentTime && check.startDate<= currentTime) {
+      if (check.endDate > currentTime && check.startDate <= currentTime) {
         const data = {
           rollno: rollno,
           reason: check.reason,
@@ -310,7 +311,7 @@ app.post("/verifyPass", async (req, res) => {
           passGeneratedDate: currentTime,
         };
         console.log("Inside if");
-        await outPassCollection.insertMany(data);
+        await outPassCollection.insertOne(data);
         console.log("added to outPass");
       }
       res.json("valid");
@@ -318,6 +319,7 @@ app.post("/verifyPass", async (req, res) => {
       res.json("invalid");
     }
   } catch (error) {
+    console.log(error);
     res.json("error");
   }
 });

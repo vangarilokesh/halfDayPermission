@@ -8,18 +8,20 @@ import Home from "./Screens/Home";
 // import QRCodeGenerator from "./components/QRCodeGenerator";
 import AddStudent from "./Screens/AddStudent";
 import { Verify } from "./components/Verify";
+import Scan from "./Screens/Scan";
 
 function App() {
   return (
     <>
       <Router>
-        <Navbar title={"Pass Genrator"} />
+        <Navbar title={"Pass Genrator"}/>
         <Routes>
-          <Route exact path="/" element={<Login />}></Route>
+          <Route exact path="/" element={<Login />} ></Route>
           <Route exact path="/signup" element={<SignUp />}></Route>
           <Route exact path="/home" element={<Home />}></Route>
           {/* <Route exact path="/generatePass/:rollno" element={<QRCodeGenerator userLoggedIn={userLoggedIn}/>}></Route> */}
           <Route exact path="/addStudent" element={<AddStudent />}></Route>
+          <Route exact path="/scan" element={<Scan></Scan>}></Route>
           <Route exact path="/verify" element={<Verify />}></Route>
         </Routes>
       </Router>

@@ -1,36 +1,57 @@
-import React, { useState, useEffect } from "react";
+// import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar(props) {
-  const history = useNavigate();
-  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  // const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("user");
-    if (loggedInUser) {
-      const foundUser = JSON.parse(loggedInUser);
-      setUser(foundUser);
-    } else {
-      alert("Login first!!");
-      history("/");
-    }
-  }, []);
+  function load() {
+    // const loggedInUser = localStorage.getItem("user");
+    // if (loggedInUser) {
+    //   const foundUser = JSON.parse(loggedInUser);
+    //   setUser(foundUser);
+    //   console.log(foundUser);
+    // } else {
+    //   alert("Login first!!");
+    //   navigate("/");
+    // }
+    return true;
+  }
+
+  async function logout() {
+    localStorage.clear();
+    // setUser(null);
+    navigate("/");
+  }
+
+  // let name = null;
+  // if (localStorage.getItem("user") !== null) {
+  //   name = localStorage.getItem("user").userid;
+  // }
 
   return (
     <div>
       <nav className={`navbar navbar-expand-lg`}>
         <div className="container-fluid">
-          <div className="navbar-brand mx-3">{props.title}</div>
-          {localStorage.getItem("user") != null && (
+          <div className="navbar-brand mx-3">
+            <Link
+              className="nav-link active"
+              aria-current="page"
+              to={true?"/home":"/"}
+            >
+              {props.title}
+            </Link>
+          </div>
+          {localStorage.getItem("user") != null && load() && (
             <div className="collapse navbar-collapse mx-3" id="navbarNav">
               <ul className="navbar-nav">
                 <li className="nav-item">
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    to="/home"
-                  >
+                    to="/home">
                     Home
                   </Link>
                 </li>
@@ -38,8 +59,7 @@ export default function Navbar(props) {
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    to="/addStudent"
-                  >
+                    to="/addStudent">
                     Add Student
                   </Link>
                 </li>
@@ -47,24 +67,20 @@ export default function Navbar(props) {
                   <Link
                     className="nav-link active"
                     aria-current="page"
-                    to="/verify"
-                  >
+                    to="/verify">
                     Verify
                   </Link>
                 </li>
               </ul>
+
               <ul className="navbar-nav">
-                <li className="nav-item">
-                  <button
-                    className="btn btn-danger  mx-2"
-                    onClick={() => {
-                      localStorage.clear();
-                      history("/");
-                    }}
-                  >
-                    Logout
-                  </button>
-                </li>
+                {localStorage.getItem("user") !== null && (
+                  <li className="nav-item">
+                    <button className="btn btn-danger mx-2" onClick={logout}>
+                      Logout
+                    </button>
+                  </li>
+                )}
               </ul>
             </div>
           )}

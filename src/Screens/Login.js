@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Login(props) {
   const history = useNavigate();
@@ -14,6 +14,10 @@ export default function Login(props) {
 
   const nav = () => {
     history("/signup");
+  };
+
+  const scan = () => {
+    history("/scan");
   };
 
   async function handleLogin(e) {
@@ -81,6 +85,9 @@ export default function Login(props) {
         <br />
         <button className="btn btn-primary my-3 mx-3" onClick={nav}>
           SignUp
+        </button>
+        <button className="btn btn-primary my-3 mx-3" onClick={scan}>
+          Scan ID card
         </button>
       </form>
     </div>
